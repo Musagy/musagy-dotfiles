@@ -1,0 +1,16 @@
+/**
+ *
+ * Author : Diego Musagy (musagy)
+ * Github : @musagy
+ * 
+ * Colors
+ **/
+
+* {
+  background: #020816ff;
+  background-alt: #051024ff;
+  foreground: #b8c2c6ff;
+  selected: #4a99e9ff;
+  active: #21ff90ff;
+  urgent: #ff4b60ff;
+}

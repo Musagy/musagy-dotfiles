@@ -1,0 +1,327 @@
+* {
+  border: none;
+  border-radius: 10px;
+  font-family: "JetbrainsMono Nerd Font Proto";
+  font-size: 15px;
+  min-height: 10px;
+}
+
+window {
+}
+
+window#waybar {
+  background-color: #020816;
+  /* background-color: #1a1b26; */
+  border-radius: 15px;
+  margin-top: 6px;
+}
+
+window#waybar.hidden {
+  opacity: 0.2;
+}
+
+#window {
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 10px;
+  transition: none;
+  color: transparent;
+  background: transparent;
+}
+
+#workspaces {
+  margin: 6px 6px 6px 6px;
+  border-radius: 18px;
+
+  background: #051024;
+  /* background: #222330; */
+  transition: none;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+#workspaces button {
+  transition: none;
+  color: #b5e8e6;
+  background: transparent;
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
+#workspaces button.focused {
+  background: #ffffff;
+}
+
+#workspaces button.persistent {
+  transition: none;
+  color: #f6768e;
+
+  background: transparent;
+  font-size: 4px;
+}
+/* #workspaces button:nth-child(1).persistent {
+  color: #ad8ee6;
+  }
+#workspaces button:nth-child(2).persistent {
+  color: #39abbd;
+}
+#workspaces button:nth-child(3).persistent {
+  color: #f6768e;
+}
+#workspaces button:nth-child(4).persistent {
+   color: #7aa2f7;
+}
+#workspaces button:nth-child(5).persistent {
+  color: #e09a68;
+}
+#workspaces button:nth-child(6).persistent {
+  color: #9fce6a;
+} */
+
+#workspaces button.empty {
+  color: #5d80cc;
+  font-size: 2px;
+  transition: none;
+  background: transparent;
+}
+
+#workspaces button.active {
+  transition: none;
+  color: #e0af68;
+  background: transparent;
+  font-size: 4px;
+}
+
+#network {
+  margin-top: 6px;
+  margin-left: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 6px;
+  border-radius: 18px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: none;
+  color: #f1f1f1;
+
+  background: #051024;
+  /* background: #222330; */
+}
+
+#pulseaudio {
+  margin-top: 6px;
+  margin-left: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 6px;
+  border-radius: 18px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: none;
+  color: #f1f1f1;
+
+  background: #051024;
+  /* background: #222330; */
+}
+
+#battery {
+  margin-top: 6px;
+  margin-left: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 6px;
+  border-radius: 18px;
+  transition: none;
+  font-size: 14px;
+  font-weight: bold;
+  color: #161320;
+
+  background: #051024;
+  /* background: #222330; */
+}
+
+#battery.charging,
+#battery.plugged {
+  color: #161320;
+  background-color: transparent;
+}
+
+#battery.critical:not(.charging) {
+  background-color: #b5e8e0;
+  color: #161320;
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes blink {
+  to {
+    color: #b5e8e0;
+  }
+}
+
+#backlight {
+  margin-top: 6px;
+  margin-left: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 0px;
+  border-radius: 10px;
+  transition: none;
+  color: #161320;
+  background: #f8bd96;
+}
+
+#clock {
+  margin-top: 6px;
+  margin-left: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-right: 8px;
+  margin-bottom: 6px;
+  border-radius: 18px;
+  transition: none;
+  font-size: 14px;
+  font-weight: bold;
+  color: #f1f1f1;
+
+  background: #051024;
+  /* background: #222330; */
+}
+
+#memory {
+  margin: 6px 0px 6px 8px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 18px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: none;
+  color: #f1f1f1;
+
+  background: #051024;
+  /* background: #222330; */
+}
+
+#disk {
+  margin-top: 6px;
+  margin-left: 8px;
+  padding-left: 10px;
+  margin-bottom: 6px;
+  padding-right: 10px;
+  border-radius: 18px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: none;
+  color: #f1f1f1;
+
+  background: #051024;
+  /* background: #222330; */
+}
+
+#cpu {
+  margin-top: 6px;
+  margin-left: 8px;
+  padding-left: 10px;
+  margin-bottom: 6px;
+  padding-right: 10px;
+  border-radius: 18px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: none;
+  color: #f1f1f1;
+
+  background: #051024;
+  /* background: #222330; */
+}
+
+#tray {
+  margin-top: 6px;
+  margin-left: 8px;
+  padding-left: 10px;
+  margin-bottom: 0px;
+  padding-right: 10px;
+  border-radius: 10px;
+  transition: none;
+  color: #b5e8e0;
+  background: #161320;
+}
+
+#custom-launcher {
+  font-size: 18px;
+  margin-left: 8px;
+  padding-left: 10px;
+  padding-right: 5px;
+  border-radius: 10px;
+  transition: none;
+  color: #7dcfff;
+  background: transparent;
+}
+
+#custom-power {
+  font-size: 18px;
+  margin-top: 6px;
+  margin-bottom: 8px;
+  margin-right: 12px;
+  padding-left: 12px;
+  padding-right: 15px;
+  border-radius: 18px;
+  transition: none;
+  color: #f6768e;
+  background: #051024;
+}
+
+#custom-updates {
+  margin-top: 6px;
+  margin-left: 8px;
+  padding-left: 10px;
+  margin-bottom: 6px;
+  padding-right: 10px;
+  border-radius: 18px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: none;
+  color: #f1f1f1;
+  background: #051024;
+}
+
+#custom-media {
+  /* margin-top: 6px;  */
+
+  margin-top: 6px;
+  margin-left: 8px;
+  padding-left: 10px;
+  margin-bottom: 6px;
+  padding-right: 10px;
+  border-radius: 18px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: none;
+  color: #f1f1f1;
+  background: #051024;
+}
+
+/* * {
+  text               : #ffffff;
+  subtext            : #ffffff;
+  nav-active-text    : #ffffff;
+  main               : #020816;
+  sidebar            : #051024;
+  player             : #030b1e;
+  card               : #0a1527;
+  shadow             : #000000;
+  main-secondary     : #06142d;
+  button             : #1464b5;
+  button-secondary   : #ffffff;
+  button-active      : #4a99e9;
+  button-disabled    : #21282f;
+  nav-active         : #37b778;
+  play-button        : #37b778;
+  tab-active         : #0a1527;
+  notification       : #051024;
+  notification-error : #051024;
+  playback-bar       : #37b778;
+  misc               : #FFFFFF;
+} */
