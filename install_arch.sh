@@ -17,6 +17,36 @@ function presentation
     echo -e "                         (_____(____/                                           "
 }
 
+# > instalacion de zsh / ohMyZsh
+# sudo pacman -S zsh
+# sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# > instalacion de rust
+# curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# > instalacion de paru
+# sudo pacman -S --needed base-devel
+# git clone https://aur.archlinux.org/paru.git
+# cd paru
+# makepkg -si
+
+# > instalacion de brave
+# sudo pacman -S brave
+
+## > Fonts
+
+# > instalacion de JetBrainsMono
+# mkdir ~/.local/share/fonts
+# unzip ./fonts/JetBrainsMono.zip -d ~/.local/share/fonts
+
+# > instalar letras japonesas
+# sudo pacman -S adobe-source-han-sans-jp-fonts
+
+# > instalar letras koreanas
+# sudo pacman -S adobe-source-han-sans-kr-fonts
+
+
+
 function copyFiles
 {
     # Check if nvim directory exist

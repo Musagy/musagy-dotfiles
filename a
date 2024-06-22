@@ -1,7 +1,0 @@
-
-unzip JetBrainsMono.zip -d ~/.local/share/fonts
-
-sudo pacman -S adobe-source-han-sans-jp-fonts
-
-
-sudo pacman -S adobe-source-han-sans-kr-fonts
