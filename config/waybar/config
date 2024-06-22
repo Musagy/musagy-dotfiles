@@ -116,8 +116,8 @@
     "return-type": "json",
     "max-length": 20,
     "format-icons": {
-      // "spotify": " ",
-      "default": " "
+      // "spotify": "󰓇 ",
+      "default": "󰎆 "
     },
     "escape": true
     // "exec": "$HOME/.config/system_scripts/mediaplayer.py 2> /dev/null",
