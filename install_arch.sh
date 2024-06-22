@@ -21,6 +21,14 @@ function presentation
 # sudo pacman -S zsh
 # sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
+# > instalacion de dependencies
+function installZshDependencies {
+    sudo pacman -S --noconfirm fastfetch
+    git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+}
+
 # > instalacion de rust
 # curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
@@ -45,29 +53,7 @@ function presentation
 # > instalar letras koreanas
 # sudo pacman -S adobe-source-han-sans-kr-fonts
 
-
-
-function copyFiles
-{
-    # Check if nvim directory exist
-    if [ -d "$HOME/.config/nvim" ]; then
-        # Check if init.vim exist
-        echo -e "\n\tExiste el directorio nvim"
-        if [ -f "$HOME/.config/nvim/init.vim" ]; then
-            echo -e "\tExiste el archivo init.vim"
-            cp $HOME/.config/nvim/init.vim $HOME/.config/nvim/backup.vim
-            cp config/nvim/init.vim $HOME/.config/nvim/init.vim
-        else
-            echo -e "\n\tNo existe el archivo creando copiando ...\n"
-            cp config/nvim/init.vim $HOME/.config/nvim/
-        fi
-    else
-        echo -e "\n\tEl directorio no existe copiando ...\n"
-	mkdir $HOME/.config/nvim
-        cp config/nvim/init.vim $HOME/.config/
-    fi
-
-    # Check if kitty directory exist
+function copyKittyConf {
     if [ -d "$HOME/.config/kitty" ]; then
         echo -e "\n\tExiste el directorio kitty"
         if [ -f "$HOME/.config/kitty/kitty.conf" ]; then
@@ -76,21 +62,67 @@ function copyFiles
             cp config/kitty/kitty.conf $HOME/.config/kitty/kitty.conf
         else
             echo -e "\n\tNo existe el archivo copiando ...\n"
-            cp config/kitty/kitty.conf $HOME/.config/kitty/
+            cp config/kitty/kitty.conf $HOME/.config/kitty
         fi
     else
         echo -e "\n\tEl directorio no existe copiando...\n"
         cp config/kitty/ $HOME/.config/
     fi
+}
 
+function copyZshConf {
     # Check if .zshrc exist
     if [ -f "$HOME/.zshrc" ]; then
         echo -e "\n\tExiste el archivo .zshrc"
         cp $HOME/.zshrc $HOME/.zshrc_backup
+        cp home/.zshrc $HOME/
     else
         echo -e "\n\tNo existe el archivo, copiando ...\n"
         cp home/.zshrc $HOME/
     fi
+}
+
+function copyfastfetch {
+    # Check if fastfatch directory exist
+    if [ -d "$HOME/.config/fastfetch" ]; then
+        echo -e "\n\tExiste el directorio fastfetch...\n\tCopiando archivos\n"
+        cp -r config/fastfetch/* $HOME/.config/fastfetch/
+    else
+        echo -e "\n\tEl directorio no existe...\n\tCreandolo...\n"
+        mkdir $HOME/.config/fastfetch
+        cp -r config/fastfetch/* $HOME/.config/fastfetch/
+    fi
+}
+
+
+function copyFiles
+{
+    # Check if nvim directory exist
+    # if [ -d "$HOME/.config/nvim" ]; then
+    #     # Check if init.vim exist
+    #     echo -e "\n\tExiste el directorio nvim"
+    #     if [ -f "$HOME/.config/nvim/init.vim" ]; then
+    #         echo -e "\tExiste el archivo init.vim"
+    #         cp $HOME/.config/nvim/init.vim $HOME/.config/nvim/backup.vim
+    #         cp config/nvim/init.vim $HOME/.config/nvim/init.vim
+    #     else
+    #         echo -e "\n\tNo existe el archivo creando copiando ...\n"
+    #         cp config/nvim/init.vim $HOME/.config/nvim/
+    #     fi
+    # else
+    #     echo -e "\n\tEl directorio no existe copiando ...\n"
+	# mkdir $HOME/.config/nvim
+    #     cp config/nvim/init.vim $HOME/.config/
+    # fi
+
+    # Check if .zshrc exist
+    # if [ -f "$HOME/.zshrc" ]; then
+    #     echo -e "\n\tExiste el archivo .zshrc"
+    #     cp $HOME/.zshrc $HOME/.zshrc_backup
+    # else
+    #     echo -e "\n\tNo existe el archivo, copiando ...\n"
+    #     cp home/.zshrc $HOME/
+    # fi
 
     # Copy hyprland files
     # Check if hypr directory exist
@@ -150,12 +182,18 @@ function installDependencies
 
 }
 
+#presentation
+
+#installDependencies
+
+#echo -e "\n\tCambiando la shell basica por zsh"
+
+#chsh -s $(which zsh)
+
+#copyFilesNvim
 presentation
 
-installDependencies
-
-echo -e "\n\tCambiando la shell basica por zsh"
-
-chsh -s $(which zsh)
-
-copyFilesNvim
+# copyKittyConf
+# copyZshConf
+# installZshDependencies
+copyfastfetch
