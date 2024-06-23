@@ -1,13 +1,11 @@
-#
-#
-# Instalador para configurar los dotfiles de 
-# Arch Linux y configuracion de terminal aplicaciones
-# y demas programas
-#
-#
+# Variables por defecto
+CUSTOM_ZSH=true
+JAPANESE_FONTS=true
+KOREAN_FONTS=true
+AUR_MANAGER_DEFAULT=true
+BROWSER_DEFAULT=true
 
-function presentation
-{
+function presentation {
     echo -e " ______                                   _____              ___ _ _            "
     echo -e "|  ___ \                                 (____ \       _    / __(_| |           "
     echo -e "| | _ | |_   _  ___  ____  ____ _   _ ___ _   \ \ ___ | |_ | |__ _| | ____  ___ "
@@ -17,41 +15,43 @@ function presentation
     echo -e "                         (_____(____/                                           "
 }
 
-# > instalacion de zsh / ohMyZsh
-# sudo pacman -S zsh
-# sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-# > instalacion de dependencies
-function installZshDependencies {
-    sudo pacman -S --noconfirm fastfetch
-    git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+# > Instalando dependencias generales
+function installDependencies {
+    sudo pacman -Syu
+    sudo pacman -S unzip rofi waybar --noconfirm
 }
 
-# > instalacion de rust
-# curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+## Configuracion de Fonts
+function installFonts {
+    # Instalacion de JetBrainsMono
+    echo -e "Instalacion de JetBrainsMono" 
+    if [ -d "$HOME/.config/fastfetch" ]; then
+        echo -e "\n\tExiste el directorio fastfetch...\n\
+        tCopiando archivos\n"
+        unzip -o ./fonts/JetBrainsMono.zip -d ~/.local/share/fonts
+    else
+        echo -e "\n\tEl directorio no existe...\n\tCreandolo...\n"
+        mkdir $HOME/.config/fastfetch
+        unzip -o ./fonts/JetBrainsMono.zip -d ~/.local/share/fonts
+    fi
 
-# > instalacion de paru
-# sudo pacman -S --needed base-devel
-# git clone https://aur.archlinux.org/paru.git
-# cd paru
-# makepkg -si
+    # Instalando emojis
+    echo -e "Instalando emojis"
+    sudo pacman -S noto-fonts-emoji --noconfirm
 
-# > instalacion de brave
-# sudo pacman -S brave
+    # Instalacion fuentes japonesas
+    if [ "$JAPANESE_FONTS" == true ]; then
+        echo -e "Instalacion fuentes japonesas"
+        sudo pacman -S adobe-source-han-sans-jp-fonts --noconfirm
+    fi
 
-## > Fonts
 
-# > instalacion de JetBrainsMono
-# mkdir ~/.local/share/fonts
-# unzip ./fonts/JetBrainsMono.zip -d ~/.local/share/fonts
-
-# > instalar letras japonesas
-# sudo pacman -S adobe-source-han-sans-jp-fonts
-
-# > instalar letras koreanas
-# sudo pacman -S adobe-source-han-sans-kr-fonts
+    # Instalacion fuentes coreanas
+    if [ "$KOREAN_FONTS" == true ]; then
+        echo -e "Instalacion fuentes coreanas" 
+        sudo pacman -S adobe-source-han-sans-kr-fonts --noconfirm
+    fi
+}
 
 function copyKittyConf {
     if [ -d "$HOME/.config/kitty" ]; then
@@ -82,7 +82,7 @@ function copyZshConf {
     fi
 }
 
-function copyfastfetch {
+function copyFastfetch {
     # Check if fastfatch directory exist
     if [ -d "$HOME/.config/fastfetch" ]; then
         echo -e "\n\tExiste el directorio fastfetch...\n\tCopiando archivos\n"
@@ -93,6 +93,67 @@ function copyfastfetch {
         cp -r config/fastfetch/* $HOME/.config/fastfetch/
     fi
 }
+
+function installZshCustom {
+    sudo pacman -S zsh fastfetch
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    
+    git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
+
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+    copyZshConf
+
+    copyFastfetch
+}
+
+# Función para instalar de AUR manager y dependencias
+function installAurManager {
+    if [ "$AUR_MANAGER_DEFAULT" == true ]; then
+        # Instalación de rust
+        # curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+        # # Instalación de paru
+        # sudo pacman -S --needed base-devel --noconfirm
+        # git clone https://aur.archlinux.org/paru.git
+        # cd paru
+        # makepkg -si
+        # cd ..
+        echo "paru"
+    else
+        # Instalación de yay
+        # sudo pacman -S --needed base-devel git --noconfirm
+        # git clone https://aur.archlinux.org/yay.git
+        # cd yay
+        # makepkg -si
+        # cd ..
+        echo "yay"
+    fi
+}
+
+function installAurDependencies {
+    if [ "$AUR_MANAGER_DEFAULT" == true ]; then
+        paru -S swww waypaper --noconfirm
+    else
+        yay -S swww waypaper --noconfirm
+    fi
+}
+
+function installBrowser {
+    if [ "$BROWSER_DEFAULT" == true ]; then
+        if [ "$AUR_MANAGER_DEFAULT" == true ]; then
+            paru -S brave --noconfirm
+        else
+            yay -S brave --noconfirm
+        fi
+    else
+        sudo pacman -S firefox --noconfirm
+    fi
+}
+
+
 
 
 function copyFiles
@@ -143,22 +204,12 @@ function copyFiles
         mkdir $HOME/.config/waybar
         cp config/waybar/* $HOME/.config/waybar/
     fi
-
-    # Check if fastfatch directory exist
-    if [ -d "$HOME/.config/fastfetch" ]; then
-        echo -e "\n\tExiste el directorio fastfetch...\n\tCopiando archivos\n"
-        cp config/fastfetch/* $HOME/.config/fastfetch/
-    else
-        echo -e "\n\tEl directorio no existe...\n\tCreandolo...\n"
-        mkdir $HOME/.config/fastfetch
-        cp config/fastfetch/* $HOME/.config/fastfetch/
-    fi
     
 
 }
 
 
-function installDependencies 
+function installDependencies1 
 {
     echo -e "\n\tInstalando Dependencias"
     sudo pacman -Syu
@@ -184,16 +235,155 @@ function installDependencies
 
 #presentation
 
-#installDependencies
-
 #echo -e "\n\tCambiando la shell basica por zsh"
 
 #chsh -s $(which zsh)
 
 #copyFilesNvim
-presentation
 
+function setCustomInstallation {
+    # ZSH Custom
+    read -p "> Instalación y Customizacion ZSH (Y/n): " CUSTOM_ZSH_CHOISE
+    case $CUSTOM_ZSH_CHOISE in
+        "Y" | "y" | "")
+            CUSTOM_ZSH=true
+            break
+            ;;
+        "N" | "n")
+            CUSTOM_ZSH=false
+            break
+            ;;
+    esac
+
+    # Fuentes Japonesas
+    read -p "> Descargar fuentes Japonesas (Y/n): " JAPANESE_FONTS_CHOISE
+    case $JAPANESE_FONTS_CHOISE in
+        "Y" | "y" | "")
+            JAPANESE_FONTS=true
+            break
+            ;;
+        "N" | "n")
+            JAPANESE_FONTS=false
+            break
+            ;;
+    esac
+
+    # Fuentes Coreanas
+    read -p "> Descargar fuentes Coreanas (Y/n): " KOREAN_FONTS_CHOISE
+    case $KOREAN_FONTS_CHOISE in
+        "Y" | "y" | "")
+            KOREAN_FONTS=true
+            break
+            ;;
+        "N" | "n")
+            KOREAN_FONTS=false
+            break
+            ;;
+    esac
+
+    # AUR manager
+    echo "> Selecciona el administrador de AUR (por defecto: Paru):"
+    echo "    1) Paru (por defecto)"
+    echo "    2) Yay"
+    while true; do
+        read -p "Introduce el número correspondiente (1 o 2, por defecto 1): " AUR_MANAGER_CHOICE
+
+        case $AUR_MANAGER_CHOICE in
+            1 | "")
+                AUR_MANAGER_DEFAULT=true
+                break
+                ;;
+            2)
+                AUR_MANAGER_DEFAULT=false
+                break
+                ;;
+            *)
+                echo "Selección no válida. Por favor, introduce 1 o 2."
+                ;;
+        esac
+    done
+
+    # Browser
+    echo "> Selecciona el Navegador:"
+    echo "    1) Brave (por defecto)"
+    echo "    2) Firefox"
+    while true; do
+        read -p "Introduce el número correspondiente (1 o 2, por defecto 1): " BROWSER_CHOICE
+
+        case $BROWSER_CHOICE in
+            1 | "")
+                BROWSER_DEFAULT=true
+                break
+                ;;
+            2)
+                BROWSER_DEFAULT=false
+                break
+                ;;
+            *)
+                echo "Selección no válida. Por favor, introduce 1 o 2."
+                ;;
+        esac
+    done
+
+}
+
+function installer {
+    echo -e ">>> Instalando dependencias"
+    # installDependencies
+    echo -e ">>> Instalando Fuentes"
+    # installFonts
+    if [ "$CUSTOM_ZSH" == true ]; then
+        echo ">>> Instalando y configurando ZSH"
+        # installZshCustom
+    fi
+    echo -e ">>> Copiando configuracion de kitty"
+    # copyKittyConf
+    echo -e ">>> Instalando AUR manager"
+    installAurManager
+    echo -e ">>> Instalando AUR dependencias"
+    installAurDependencies
+    echo -e ">>> Copiando configuracion de hyprland"
+    # installAurDependencies
+
+
+    echo -e "Instalando Navegador"
+    #installAurDependencies
+}
+
+function setTypeInstall {
+    echo "> Instalación por defecto o custom:"
+    echo "    1) Por Defecto"
+    echo "    2) Custom"
+
+    while true; do
+        read -p "Introduce el número correspondiente (1 o 2, por defecto 1): " TYPE_INSTALL_CHOICE
+
+        case $TYPE_INSTALL_CHOICE in
+            1|"")
+                installer
+                break
+                ;;
+            2)
+                setCustomInstallation
+                installer
+                break
+                ;;
+            *)
+                echo "Selección no válida. Por favor, introduce 1 o 2."
+                ;;
+        esac
+    done
+}
+
+
+
+presentation
+setTypeInstall
+
+# installDependencies
+# installAurMAnager 1
+
+# installFonts
 # copyKittyConf
-# copyZshConf
+
 # installZshDependencies
-copyfastfetch
