@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Variables por defecto
 CUSTOM_ZSH=true
 JAPANESE_FONTS=true
@@ -115,7 +117,7 @@ function installZshCustom {
 function setWallpaperFolder {
     # Variables
     WAYPAPER_CONFIG="./config/waypaper/config.ini"
-    WALLPAPER_DEFAULT="$WALLPAPER_FOLDER/bg.png"
+    WALLPAPER_DEFAULT="$WALLPAPER_FOLDER/bg-default.png"
 
     # Cambiando los parametros de la configuracion de waypaper
     sed -i "s|^folder *=.*|folder = $WALLPAPER_FOLDER|" "$WAYPAPER_CONFIG"
@@ -129,26 +131,26 @@ function setWallpaperFolder {
 # Función para instalar de AUR manager y dependencias
 function installAurManager {
     if [ "$AUR_MANAGER_DEFAULT" == true ]; then
-        # Instalación de rust
-        # curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        Instalación de rust
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-        # # Instalación de paru
-        # sudo pacman -S --needed base-devel --noconfirm
-        # git clone https://aur.archlinux.org/paru.git
-        # cd paru
-        # makepkg -si
-        # cd ..
-        # rm -rf paru
-        echo "paru"
+        # Instalación de paru
+        sudo pacman -S --needed base-devel --noconfirm
+        git clone https://aur.archlinux.org/paru.git
+        cd paru
+        makepkg -si
+        cd ..
+        rm -rf paru
+        # echo "paru"
     else
-        # Instalación de yay
-        # sudo pacman -S --needed base-devel git --noconfirm
-        # git clone https://aur.archlinux.org/yay.git
-        # cd yay
-        # makepkg -si
-        # cd ..
-        # rm -rf yay
-        echo "yay"
+        Instalación de yay
+        sudo pacman -S --needed base-devel git --noconfirm
+        git clone https://aur.archlinux.org/yay.git
+        cd yay
+        makepkg -si
+        cd ..
+        rm -rf yay
+        # echo "yay"
     fi
 }
 
@@ -354,35 +356,35 @@ function setCustomInstallation {
 
 function installer {
     echo -e ">>> Instalando dependencias"
-    # installDependencies
+    installDependencies
     echo -e ">>> Instalando Fuentes"
-    # installFonts
+    installFonts
     if [ "$CUSTOM_ZSH" == true ]; then
         echo ">>> Instalando y configurando ZSH"
-        # installZshCustom
+        installZshCustom
     fi
     echo -e ">>> Copiando configuracion de kitty"
-    # copyKittyConf
+    copyKittyConf
     echo -e ">>> Instalando AUR manager"
-    # installAurManager
+    installAurManager
     echo -e ">>> Configurando la carpeta de Wallpapers y pre montando Waypaper conf"
-    # setWallpaperFolder
+    setWallpaperFolder
     echo -e ">>> Instalando AUR dependencias"
-    # installAurDependencies
+    installAurDependencies
     echo -e ">>> Creando carpeta de Wallpaper"
-    # installAurDependencies
+    installAurDependencies
     echo -e ">>> Copiando configuracion de hyprland"
-    # copyHyprConf
+    copyHyprConf
     echo -e ">>> Copiando configuracion de waybar"
-    # copyWaybarConf
+    copyWaybarConf
     if [ "$CUSTOM_ROFI" == true ]; then
         echo -e ">>> Instalando tema de rofi"
-        # setRofiTheme
+        setRofiTheme
         echo -e ">>> Copiando configuracion de rofi"
-        # copyRofiConf
+        copyRofiConf
     fi
     echo -e ">>> Instalando Navegador"
-    #installAurDependencies
+    installAurDependencies
 
     if [ "$CUSTOM_ZSH" == true ]; then
         echo ">>> Instalando y configurando NeoVim"
