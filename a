@@ -1,0 +1,11 @@
+: 1718384455:0;paru -S nwg-look
+: 1718384503:0;nwg-look
+: 1718384572:0;cd /usr/share/icons
+: 1718384574:0;ls
+: 1718384585:0;cd default
+: 1718384598:0;ls
+: 1718384609:0;sudo nvim index.theme
+
+```
+[Icon Theme]
+Inherits=Bibata-Modern_Ice
