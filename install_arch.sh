@@ -165,22 +165,22 @@ function installAurDependencies {
 function copyHyprConf {
     if [ -d "$HOME/.config/hypr" ]; then
         echo -e "\n\tExiste el directorio hypr...\n\tCopiando archivos\n"
-        cp config/hypr/* $HOME/.config/hypr
+        cp -r config/hypr/* $HOME/.config/hypr
     else
         echo -e "\n\tEl directorio no existe...\n\tCreandolo...\n"
         mkdir $HOME/.config/hypr
-        cp config/hypr/* $HOME/.config/hypr
+        cp -r config/hypr/* $HOME/.config/hypr
     fi
 }
 
 function copyWaybarConf {
     if [ -d "$HOME/.config/waybar" ]; then
         echo -e "\n\tExiste el directorio waybar...\n\tCopiando archivos\n"
-        cp config/waybar/* $HOME/.config/waybar
+        cp -r config/waybar/* $HOME/.config/waybar
     else
         echo -e "\n\tEl directorio no existe...\n\tCreandolo...\n"
         mkdir $HOME/.config/waybar
-        cp config/waybar/* $HOME/.config/waybar/
+        cp -r config/waybar/* $HOME/.config/waybar/
     fi
 }
 
@@ -201,6 +201,17 @@ function setRofiTheme {
     ./setup.sh
     cd ..
     rm -rf rofi
+}
+
+function copyWaypaperConf {
+    if [ -d "$HOME/.config/waypaper" ]; then
+        echo -e "\n\tExiste el directorio waypaper...\n\tCopiando archivos\n"
+        cp -r config/waypaper/* $HOME/.config/waypaper
+    else
+        echo -e "\n\tEl directorio no existe...\n\tCreandolo...\n"
+        mkdir $HOME/.config/waypaper
+        cp -r config/waypaper/* $HOME/.config/waypaper/
+    fi
 }
 
 function installBrowser {
@@ -359,10 +370,6 @@ function installer {
     installDependencies
     echo -e ">>> Instalando Fuentes"
     installFonts
-    if [ "$CUSTOM_ZSH" == true ]; then
-        echo ">>> Instalando y configurando ZSH"
-        installZshCustom
-    fi
     echo -e ">>> Copiando configuracion de kitty"
     copyKittyConf
     echo -e ">>> Instalando AUR manager"
@@ -383,12 +390,17 @@ function installer {
         echo -e ">>> Copiando configuracion de rofi"
         copyRofiConf
     fi
+    echo -e ">>> Copiando configuracion de waypaper"
+    copyWaypaperConf
     echo -e ">>> Instalando Navegador"
-    installAurDependencies
-
+    installBrowser
     if [ "$CUSTOM_ZSH" == true ]; then
         echo ">>> Instalando y configurando NeoVim"
         setNeoVim
+    fi
+    if [ "$CUSTOM_ZSH" == true ]; then
+        echo ">>> Instalando y configurando ZSH"
+        installZshCustom
     fi
 }
 
@@ -421,3 +433,4 @@ function setTypeInstall {
 
 presentation
 setTypeInstall
+echo $WALLPAPER_FOLDER
