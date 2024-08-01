@@ -101,7 +101,7 @@ function copyFastfetch {
 
 function installZshCustom {
     sudo pacman -S --needed zsh fastfetch
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     
     git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
 
@@ -112,6 +112,8 @@ function installZshCustom {
     copyZshConf
 
     copyFastfetch
+
+    chsh -s /bin/zsh
 }
 
 function setWallpaperFolder {
@@ -366,41 +368,41 @@ function setCustomInstallation {
 }
 
 function installer {
-    echo -e ">>> Instalando dependencias"
-    installDependencies
-    echo -e ">>> Instalando Fuentes"
-    installFonts
-    echo -e ">>> Copiando configuracion de kitty"
-    copyKittyConf
-    echo -e ">>> Instalando AUR manager"
-    installAurManager
-    echo -e ">>> Configurando la carpeta de Wallpapers y pre montando Waypaper conf"
-    setWallpaperFolder
-    echo -e ">>> Instalando AUR dependencias"
-    installAurDependencies
-    echo -e ">>> Creando carpeta de Wallpaper"
-    installAurDependencies
-    echo -e ">>> Copiando configuracion de hyprland"
-    copyHyprConf
-    echo -e ">>> Copiando configuracion de waybar"
-    copyWaybarConf
-    if [ "$CUSTOM_ROFI" == true ]; then
-        echo -e ">>> Instalando tema de rofi"
-        setRofiTheme
-        echo -e ">>> Copiando configuracion de rofi"
-        copyRofiConf
-    fi
+    # echo -e ">>> Instalando dependencias"
+    # installDependencies
+    # echo -e ">>> Instalando Fuentes"
+    # installFonts
+    # echo -e ">>> Copiando configuracion de kitty"
+    # copyKittyConf
+    # if [ "$CUSTOM_ZSH" == true ]; then
+    #     echo ">>> Instalando y configurando ZSH"
+    #     installZshCustom
+    # fi
+    # echo -e ">>> Instalando AUR manager"
+    # installAurManager
+    # echo -e ">>> Configurando la carpeta de Wallpapers y pre montando Waypaper conf"
+    # setWallpaperFolder
+    # echo -e ">>> Instalando AUR dependencias"
+    # installAurDependencies
+    # echo -e ">>> Creando carpeta de Wallpaper"
+    # installAurDependencies
+    # echo -e ">>> Copiando configuracion de hyprland"
+    # copyHyprConf
+    # echo -e ">>> Copiando configuracion de waybar"
+    # copyWaybarConf
+    # if [ "$CUSTOM_ROFI" == true ]; then
+    #     echo -e ">>> Instalando tema de rofi"
+    #     setRofiTheme
+    #     echo -e ">>> Copiando configuracion de rofi"
+    #     copyRofiConf
+    # fi
     echo -e ">>> Copiando configuracion de waypaper"
     copyWaypaperConf
-    echo -e ">>> Instalando Navegador"
-    installBrowser
+    # echo -e ">>> Instalando Navegador"
+    # installBrowser
     if [ "$CUSTOM_ZSH" == true ]; then
         echo ">>> Instalando y configurando NeoVim"
         setNeoVim
-    fi
-    if [ "$CUSTOM_ZSH" == true ]; then
-        echo ">>> Instalando y configurando ZSH"
-        installZshCustom
     fi
 }
 
@@ -431,6 +433,24 @@ function setTypeInstall {
 
 
 
-presentation
-setTypeInstall
-echo $WALLPAPER_FOLDER
+# presentation
+# setTypeInstall
+# echo $WALLPAPER_FOLDER
+
+
+WALLPAPER_FOLDER=~/Pictures/Wallpapers
+
+read -p "> Carpeta de wallpapers (por defecto: ~/Pictures/Wallpapers): " WALLPAPER_FOLDER
+WALLPAPER_FOLDER=${WALLPAPER_FOLDER:-"~/Pictures/Wallpapers"}
+
+# Variables
+WAYPAPER_CONFIG="./config/waypaper/config.ini"
+WALLPAPER_DEFAULT="$WALLPAPER_FOLDER/bg-default.png"
+
+# Cambiando los parametros de la configuracion de waypaper
+sed -i "s|^folder *=.*|folder = $WALLPAPER_FOLDER|" "$WAYPAPER_CONFIG"
+sed -i "s|^wallpaper *=.*|wallpaper = $WALLPAPER_DEFAULT|" "$WAYPAPER_CONFIG"
+
+# Creando y copiando la carpeta de Wallpapers donde debe de ir
+mkdir -p "$WALLPAPER_FOLDER"
+cp -r ./Wallpapers/. "$WALLPAPER_FOLDER"
